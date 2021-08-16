@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions } from 'react-native'
 
 import Author from './Author'
+import Comment from './Comment'
 
 class Post extends Component {
     render() {
@@ -11,6 +12,7 @@ class Post extends Component {
                     style={styles.image}
                 />
                 <Author email="renan@email.com" nickname="Renan"/>
+                <Comment comments={this.props.comments}/>
             </View>
         )
     }
