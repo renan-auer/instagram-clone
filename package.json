@@ -34,7 +34,7 @@
   "jest": {
     "preset": "react-native"
   },
-  "rnpm" : {
+  "rnpm": {
     "assets": [
       "./assets/fonts/"
     ]

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image, Dimensions } from 'react-native'
 
+import AddComment from './AddComment'
 import Author from './Author'
 import Comment from './Comment'
 
@@ -13,6 +14,7 @@ class Post extends Component {
                 />
                 <Author email="renan@email.com" nickname="Renan"/>
                 <Comment comments={this.props.comments}/>
+                <AddComment/>
             </View>
         )
     }
