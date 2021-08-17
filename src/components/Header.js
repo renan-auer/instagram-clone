@@ -3,7 +3,6 @@ import {
     StyleSheet,
     Text,
     View,
-    Platform,
     Image
 } from 'react-native'
 import icon from '../../assets/imgs/icon.png'
@@ -26,6 +25,7 @@ const styles = StyleSheet.create({
         padding: 20,
         borderBottomWidth: 1,
         borderColor: '#BBB',
+        width: '100%'
     },
     rowContainer: {
         flexDirection: 'row',
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     title: {
         color: '#000',
         fontFamily: 'shelter',
-        height: 40,
-        fontSize: 28
+        height: 30,
+        fontSize: 30
     }
 })
 
