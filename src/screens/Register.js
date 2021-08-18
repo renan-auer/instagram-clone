@@ -1,50 +1,43 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View, Text, TextInput, } from 'react-native'
 
-class Login extends Component {
+class Register extends Component {
     state = {
+        name: '',
         email: '',
         password: ''
     }
 
-    login = () => {
-        this.props.navigation.navigate('Profile')
-    }
+    registrar = () => {
 
-    registar = () => {
-        this.props.navigation.navigate('Register')
     }
 
     render() {
         return (
             <View style={styles.container}>
+                <TextInput placeholder="Nome" style={styles.input}
+                    value={this.state.name}
+                    onChangeText={name => this.setState({ name })}
+                />
+
                 <TextInput placeholder="Email" style={styles.input}
                     keyboardType="email-address" value={this.state.email}
                     onChangeText={email => this.setState({ email })}
                 />
 
                 <TextInput placeholder="Password" style={styles.input}
-                   keyboardType="email-address"
+                    keyboardType="email-address"
                     secureTextEntry={true}
                     value={this.state.password}
                     onChangeText={password => this.setState({ password })}
                 />
 
                 <TouchableOpacity
-                    onPress={this.login}
+                    onPress={this.registrar}
                     style={styles.buttom}
                 >
                     <Text style={styles.buttomText}>
-                        Login
-                    </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={ this.registar }
-                    style={styles.buttom}
-                >
-                    <Text style={styles.buttomText}>
-                        Criar nova conta
+                        Registrar
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -73,7 +66,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#4286f4',
         borderRadius: 10,
         justifyContent: 'center',
-      alignItems: 'center'
+        alignItems: 'center'
     },
     buttomText: {
         fontSize: 20,
@@ -81,4 +74,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Login
+export default Register
