@@ -49,7 +49,6 @@ class AddPhoto extends Component {
         })
         this.setState({ image: null, comment: '' })
         this.props.navigation.navigate('Feed')
-        Alert.alert("Imagem adicionada", this.state.comment)
     }
 
     render() {
