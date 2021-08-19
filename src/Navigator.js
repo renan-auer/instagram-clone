@@ -23,7 +23,7 @@ const loginOrProfileRouter = createSwitchNavigator({
     Profile: Profile,
     Auth: authRouter
 }, {
-    initialRouteName: 'Profile'
+    initialRouteName: 'Auth'
 })
 
 const menuRoutes = {
@@ -33,7 +33,7 @@ const menuRoutes = {
         navigationOptions: {
             title: "Feed",
             tabBarIcon: ({ tintColor }) =>
-                <Icon name="camera" size={30} color={tintColor}/>
+                <Icon name="feed" size={30} color={tintColor}/>
         }
     },
     AddPhoto: {
