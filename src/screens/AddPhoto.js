@@ -22,6 +22,16 @@ class AddPhoto extends Component {
         comment: ''
     }
 
+    componentDidUpdate = prevProps => {
+        if(prevProps.loading && !this.props.loading) {
+            this.setState({
+                image: null,
+                comment: ''
+            })
+            this.props.navigation.navigate('Feed')
+        }
+    }
+
     pickImage = async () => {
         if(!this.props.name) {
             Alert.alert('Não autorizado', 'Você precisa estar logado para poder postar fotos')
@@ -30,11 +40,12 @@ class AddPhoto extends Component {
         ImagePicker.showImagePicker({
             title: 'Escolha a imagem',
             maxHeight: 600,
-            maxWidth: 800
+            maxWidth: 800,
+            includeBase64: true
+            
         }, res => {
-            console.warn(res)
             if (!res.didCancel) {
-                this.setState({ image: { uri: res.uri, base64: res.base64 } })
+                this.setState({ image: { uri: res.uri, base64: res.data } })
             }
         })
         
@@ -55,8 +66,6 @@ class AddPhoto extends Component {
                 comment: this.state.comment
             }]
         })
-        this.setState({ image: null, comment: '' })
-        this.props.navigation.navigate('Feed')
     }
 
     render() {
@@ -81,7 +90,8 @@ class AddPhoto extends Component {
 
                     <TouchableOpacity
                         onPress={this.save}
-                        style={styles.buttom}>
+                        disabled={this.props.loading}
+                        style={[styles.buttom, this.props.loading ? styles.buttonDisabled : null]}>
                         <Text style={styles.buttomText}>Salvar</Text>
                     </TouchableOpacity>
                 </View>
@@ -122,13 +132,17 @@ const styles = StyleSheet.create({
     input: {
         marginTop: 20,
         width: '90%'
+    },
+    disabled: {
+        backgroundColor: '#AAA'
     }
 })
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = ({ user, posts }) => {
     return {
         email: user.email,
-        name: user.name
+        name: user.name,
+        loading: posts.isUploading
     }
 }
 
