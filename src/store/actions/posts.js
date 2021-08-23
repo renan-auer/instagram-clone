@@ -19,7 +19,20 @@ export const addPost = post => {
     }
 }
 
-export const addComment = comment => {
+export const addComment = payload => {
+    return dispatch => {
+        axios.get(`/posts/${payload.postId}.json`)
+            .catch(err => console.warn(err))
+            .then(res => {
+                const comments = res.data.comments || []
+                comments.push(payload.comment)
+                axios.patch(`/posts/${payload.postId}.json`, { comments })
+                .catch(err => console.warn(err))
+                .then(res => {
+                    dispatch(fetchPosts())
+                })
+            })
+    }
     return {
         type: ADD_COMMENT,
         payload: comment
