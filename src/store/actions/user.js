@@ -5,6 +5,7 @@ import {
     LOADING_USER
 } from './actionTypes'
 import axios from 'axios'
+import { setMessage } from './message'
 
 const authBaseURL = 'https://identitytoolkit.googleapis.com/v1'
 const API_KEY = 'AIzaSyChEOZMq83h57Gn9Px19IlsIbWFsju3Ql4'
@@ -29,16 +30,13 @@ export const createUser = (user) => {
             password: user.password,
             returnSecureToken: true
         })
-        .catch(err => {
-            console.warn(err)
-        })
+        .catch(err => handleError(dispatch))
         .then(res => {
-            console.warn(res.data)
             if(res.data.localId) {
                 axios.put(`/users/${res.data.localId}.json`, {
                     name: user.name,
                 })
-                .catch(err => console.warn(err))
+                .catch(err => handleError(dispatch))
                 .then(res => {
                     console.warn('Usuário criado com sucesso')
                 })
@@ -67,12 +65,11 @@ export const login = user => {
             password: user.password,
             returnSecureToken: true
         })
-        .catch(err => console.warn(err))
+        .catch(err => handleError(dispatch))
         .then(res => {
-            console.warn(res.data)
             if(res.data.localId) {
                 axios.get(`/users/${res.data.localId}.json`)
-                .catch(err => console.warn(err))
+                .catch(err => handleError(dispatch))
                 .then(res => {
                     user.password = null
                     user.name = res.data.name
@@ -82,4 +79,11 @@ export const login = user => {
             }
         })
     }
+}
+
+const handleError = dispatch => {
+    dispatch(setMessage({
+        title: 'Erro!',
+        text: 'Um erro desconhecido ocorreu!'
+    }))
 }

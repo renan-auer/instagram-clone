@@ -6,10 +6,12 @@ import {
 import thunk from 'redux-thunk'
 import userReducer from './reducers/user'
 import postReducer from './reducers/post'
+import messageReducer from './reducers/message'
 
 const reducers = combineReducers({
     user: userReducer,
     posts: postReducer,
+    message: messageReducer,
 })
 
 const storeConfig = () => {
