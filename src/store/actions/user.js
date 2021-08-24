@@ -1,9 +1,15 @@
-import { USER_LOGGED_IN, USER_LOGGED_OUT} from './actionTypes'
+import { 
+    USER_LOGGED_IN, 
+    USER_LOGGED_OUT,
+    USER_LOADED,
+    LOADING_USER
+} from './actionTypes'
 import axios from 'axios'
 
-const authBaseURL = 'https://identitytoolkit.googleapis.com'
+const authBaseURL = 'https://identitytoolkit.googleapis.com/v1'
 const API_KEY = 'AIzaSyChEOZMq83h57Gn9Px19IlsIbWFsju3Ql4'
-export const login = user => {
+
+export const userLogged = user => {
     return {
         type: USER_LOGGED_IN,
         payload: user
@@ -18,7 +24,7 @@ export const logout = () => {
 
 export const createUser = (user) => {
     return dispatch => {
-        axios.post(`${authBaseURL}/v1/accounts:signUp?key=${API_KEY}`, {
+        axios.post(`${authBaseURL}/accounts:signUp?key=${API_KEY}`, {
             email: user.email,
             password: user.password,
             returnSecureToken: true
@@ -35,6 +41,43 @@ export const createUser = (user) => {
                 .catch(err => console.warn(err))
                 .then(res => {
                     console.warn('Usuário criado com sucesso')
+                })
+            }
+        })
+    }
+}
+
+export const loadingUser = () => {
+    return {
+        type: LOADING_USER
+    }
+}
+
+export const userLoaded = () => {
+    return {
+        type: USER_LOADED
+    }
+}
+
+export const login = user => {
+    return dispatch => {
+        dispatch(loadingUser())
+        axios.post(`${authBaseURL}/accounts:signInWithPassword?key=${API_KEY}`, {
+            email: user.email,
+            password: user.password,
+            returnSecureToken: true
+        })
+        .catch(err => console.warn(err))
+        .then(res => {
+            console.warn(res.data)
+            if(res.data.localId) {
+                axios.get(`/users/${res.data.localId}.json`)
+                .catch(err => console.warn(err))
+                .then(res => {
+                    user.password = null
+                    user.name = res.data.name
+                    dispatch(userLogged(user))
+                    dispatch(userLoaded())
                 })
             }
         })
