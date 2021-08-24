@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View, Text, TextInput, } from 'react-native'
+import { connect } from 'react-redux'
+import { createUser } from '../store/actions/user'
 
 class Register extends Component {
     state = {
@@ -9,7 +11,7 @@ class Register extends Component {
     }
 
     registrar = () => {
-
+        this.props.onCreateUser(this.state)
     }
 
     render() {
@@ -74,4 +76,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Register
+const mapDispatchToProps = dispatch => {
+    return {
+        onCreateUser: user => dispatch(createUser(user))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Register)
