@@ -37,8 +37,11 @@ export const createUser = (user) => {
                     name: user.name,
                 })
                 .catch(err => handleError(dispatch))
-                .then(res => {
-                    console.warn('Usuário criado com sucesso')
+                .then(() => {
+                    delete user.password
+                    user.id = res.data.localId
+                    dispatch(userLogged(user))
+                    dispatch(userLoaded())
                 })
             }
         })
@@ -71,7 +74,7 @@ export const login = user => {
                 axios.get(`/users/${res.data.localId}.json`)
                 .catch(err => handleError(dispatch))
                 .then(res => {
-                    user.password = null
+                    delete user.password
                     user.name = res.data.name
                     dispatch(userLogged(user))
                     dispatch(userLoaded())
