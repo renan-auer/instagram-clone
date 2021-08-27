@@ -3,13 +3,13 @@ import axios from 'axios'
 import { setMessage } from './message'
 
 export const addPost = post => {
-    return dispatch => {
+    return (dispatch, getState ) => {
         dispatch(creatingPost())
         axios.post('https://us-central1-yradie-maps.cloudfunctions.net/uploadImage', {
             image: post.image.base64
         }).then(res => {
             post.image = res.data.imageUrl.replace("&token", "&token=")
-            axios.post('/posts.json', { ...post })
+            axios.post(`/posts.json?auth=${getState().user.token}`, { ...post })
                 .then(res => {
                     dispatch(fetchPosts())
                     dispatch(postCreated())
@@ -28,16 +28,20 @@ const handleError = dispatch => {
 }
 
 export const addComment = payload => {
-    return dispatch => {
-        axios.get(`/posts/${payload.postId}.json`)
-            .catch(err => handleError(dispatch))
+    return ( dispatch, getState ) => {
+        console.warn(getState().user.token)
+        axios.get(`/posts/${payload.postId}.json?auth=${getState().user.token}`)
+            .catch(err => {
+                console.warn(err)
+            })
             .then(res => {
                 const comments = res.data.comments || []
                 comments.push(payload.comment)
                 axios.patch(`/posts/${payload.postId}.json`, { comments })
-                .catch(err => handleError(dispatch))
+                .catch(err => {
+                    console.warn(err)})
                 .then(res => {
-                    dispatch(fetchPosts())
+                    console.warn(err)
                 })
             })
     }

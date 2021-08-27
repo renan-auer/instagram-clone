@@ -38,10 +38,7 @@ export const createUser = (user) => {
                 })
                 .catch(err => handleError(dispatch))
                 .then(() => {
-                    delete user.password
-                    user.id = res.data.localId
-                    dispatch(userLogged(user))
-                    dispatch(userLoaded())
+                    dispatch(login(user))
                 })
             }
         })
@@ -71,6 +68,7 @@ export const login = user => {
         .catch(err => handleError(dispatch))
         .then(res => {
             if(res.data.localId) {
+                user.token = res.data.idToken
                 axios.get(`/users/${res.data.localId}.json`)
                 .catch(err => handleError(dispatch))
                 .then(res => {
